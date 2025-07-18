@@ -11,9 +11,7 @@ from typing_extensions import TypedDict
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 model_id = "Qwen/Qwen3-0.6B"
-model = AutoModelForCausalLM.from_pretrained(
-    model_id, cache_dir="/big_storage/llms/hf_models/"
-).to(device)
+model = AutoModelForCausalLM.from_pretrained(model_id).to(device)
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 streamer = TextIteratorStreamer(tokenizer, skip_prompt=True)
 
