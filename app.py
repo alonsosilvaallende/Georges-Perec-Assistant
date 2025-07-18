@@ -8,7 +8,13 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, TextIteratorStream
 from transformers.generation import LogitsProcessor
 from typing_extensions import TypedDict
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# Auto select device (CUDA > MPS > CPU)
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+    device = torch.device("mps")
+else:
+    device = torch.device("cpu")
 
 model_id = "Qwen/Qwen3-0.6B"
 model = AutoModelForCausalLM.from_pretrained(model_id).to(device)
